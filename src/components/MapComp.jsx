@@ -64,7 +64,10 @@ const MapComp = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={issData} icon={Icon()}></Marker>
+      {/* {previousLocation &&
+                previousLocation.map((issData, index) => (
+                    <Marker position={issData} key={index} icon={Dot}></Marker>
+                ))} */}
     </MapContainer>
   );
 };
