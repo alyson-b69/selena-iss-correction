@@ -9,11 +9,11 @@ function issPosition() {
 
 function* getISSFetch() {
   const iss = yield call(issPosition);
-  yield put({ type: WHERE_ISS, iss });
+  yield put({ type: ISS_IS_HERE, iss });
 }
 
 function* mySaga() {
-  yield takeEvery("ISS_IS_HERE", getISSFetch);
+  yield takeEvery(WHERE_ISS, getISSFetch);
 }
 
 export default mySaga;

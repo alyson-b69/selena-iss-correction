@@ -5,7 +5,7 @@ const reducerISS = (
     iss: {
       message: "",
       timestamp: "",
-      iss_position: { latitude: "", longitude: "" },
+      iss_position: { latitude: 0, longitude: 20 },
     },
   },
   action

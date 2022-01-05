@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { whereISS } from "../store/actionISS";
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
 // ICON ISS WITH LEAFLET //
-
 const Icon = L.icon({
   iconUrl: "http://open-notify.org//Open-Notify-API/map/ISSIcon.png",
   iconSize: [50, 30],
@@ -13,61 +12,37 @@ const Icon = L.icon({
   popupAnchor: [0, -30],
 });
 
-// function MapISS({ center, zoom }) {
-//   const map = useMap();
-//   map.setView(center, (zoom = 13));
-//   return null;
-// }
-
 const MapComp = () => {
-  // const [previousLocation, setPreviousLocation] = useState([]);
   const dispatch = useDispatch();
   const issData = useSelector((state) => state.reducerISS.iss.iss_position);
-  const [markers, setMarkers] = useState();
+  const [position, setPosition] = useState([0,20]);
 
   useEffect(() => {
     setInterval(() => {
       dispatch(whereISS());
-    }, 1000);
+    }, 10000);
   }, [dispatch]);
 
   useEffect(() => {
-    const checkInput = () => {
-      if (issData) {
-        setMarkers({
-          lat: issData.latitude,
-          lng: issData.longitude,
-        });
-      }
-    };
-    // const previousLoc = function () {
-    //   if (issData) {
-    //     let currentLoc = {
-    //       lat: issData.latitude,
-    //       lng: issData.longitude,
-    //       id: issData.timestamp,
-    //     };
-    //     setPreviousLocation([...previousLocation, currentLoc]);
-    //   }
-    // };
-    // checkInput();
-    // previousLoc();
-    return () => {
-      checkInput();
-    };
-  }, [issData]);
+        setPosition([issData.latitude, issData.longitude])
+  }, [issData] );
 
   return (
-    <MapContainer center={markers}>
-      {/* <MapISS center={[issData]} /> */}
+    <MapContainer
+        style={{width: '100vw', height: '100vh'}}
+        center={{lat: 0, lng: 20}}
+        zoom={2}
+        scrollWheelZoom={false}
+        minZoom={0}
+        maxZoom={7}
+        >
+
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      {/* {previousLocation &&
-                previousLocation.map((issData, index) => (
-                    <Marker position={issData} key={index} icon={Dot}></Marker>
-                ))} */}
+      <Marker position={position} icon={Icon}></Marker>
+
     </MapContainer>
   );
 };
